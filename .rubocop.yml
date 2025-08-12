@@ -1,0 +1,311 @@
+# RuboCop configuration for Rails 8 with advanced linters
+require:
+  - rubocop-rails
+  - rubocop-performance  
+  - rubocop-rspec
+  - rubocop-capybara
+  - rubocop-factory_bot
+  - rubocop-thread_safety
+  - rubocop-rake
+
+AllCops:
+  NewCops: enable
+  SuggestExtensions: false # Disable extension suggestions
+  TargetRubyVersion: 3.2
+  TargetRailsVersion: 8.0
+  Exclude:
+    - 'vendor/**/*'
+    - 'db/schema.rb'
+    - 'db/migrate/*'
+    - 'bin/**/*'
+    - 'config/**/*'  # Exclude entire config directory
+    - 'tmp/**/*'
+    - 'log/**/*'
+    - 'public/**/*'
+    - 'storage/**/*'
+    - 'node_modules/**/*'
+    - 'test/**/*' # Exclude default Rails test files
+
+# Layout & Formatting
+Layout/LineLength:
+  Max: 120
+  AllowedPatterns: ['\A\s*#'] # Allow long comments
+  Exclude:
+    - 'spec/swagger_helper.rb'
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: aligned
+
+Layout/ParameterAlignment:
+  EnforcedStyle: with_first_parameter
+
+# Style Rules
+Style/Documentation:
+  Enabled: false # Disable for now, enable later with YARD
+
+Style/FrozenStringLiteralComment:
+  Enabled: true
+  EnforcedStyle: always
+
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: single_quotes
+
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: comma
+
+# Metrics
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+    - 'config/routes.rb'
+    - 'lib/tasks/**/*'
+
+Metrics/ClassLength:
+  Max: 200
+
+Metrics/MethodLength:
+  Max: 25
+
+Metrics/ModuleLength:
+  Max: 200
+
+# Rails-specific rules
+Rails:
+  Enabled: true
+
+Rails/Output:
+  Exclude:
+    - 'db/seeds.rb'
+
+Rails/SkipsModelValidations:
+  Enabled: false # Allow for performance reasons
+
+Rails/ThreeStateBooleanColumn:
+  Enabled: true
+
+Rails/AddColumnIndex:
+  Enabled: true
+
+Rails/BulkChangeTable:
+  Enabled: true
+
+Rails/CreateTableWithTimestamps:
+  Enabled: true
+
+Rails/DuplicateAssociation:
+  Enabled: true
+
+Rails/DuplicateScope:
+  Enabled: true
+
+Rails/I18nLocaleAssignment:
+  Enabled: true
+
+Rails/RedundantTravelBack:
+  Enabled: true
+
+Rails/UnusedIgnoredColumns:
+  Enabled: true
+
+# Performance rules
+Performance:
+  Enabled: true
+
+Performance/CollectionLiteralInLoop:
+  Enabled: true
+
+Performance/ConstantRegexp:
+  Enabled: true
+
+Performance/MethodObjectAsBlock:
+  Enabled: true
+
+Performance/RedundantSortBlock:
+  Enabled: true
+
+Performance/ReverseFirst:
+  Enabled: true
+
+Performance/SortReverse:
+  Enabled: true
+
+Performance/Squeeze:
+  Enabled: true
+
+Performance/StringInclude:
+  Enabled: true
+
+Performance/Sum:
+  Enabled: true
+
+# RSpec rules
+RSpec:
+  Enabled: true
+
+RSpec/DescribeClass:
+  Enabled: true
+
+RSpec/ExampleLength:
+  Max: 25
+
+RSpec/MultipleExpectations:
+  Max: 5
+  Exclude:
+    - 'spec/controllers/complexity_scores_controller_spec.rb'
+    - 'spec/controllers/concerns/simple_error_handling_spec.rb'
+    - 'spec/forms/base_form_spec.rb'
+
+RSpec/NestedGroups:
+  Max: 5
+
+RSpec/LetSetup:
+  Enabled: false # Allow for complex setups
+
+RSpec/MessageSpies:
+  EnforcedStyle: have_received
+
+RSpec/InstanceVariable:
+  Enabled: false # Allow for shared examples
+
+# Factory Bot rules
+FactoryBot:
+  Enabled: true
+
+FactoryBot/ConsistentParenthesesStyle:
+  EnforcedStyle: require_parentheses
+
+# Capybara rules
+Capybara:
+  Enabled: true
+
+Capybara/ClickLinkOrButtonStyle:
+  EnforcedStyle: strict
+
+Capybara/NegationMatcher:
+  Enabled: true
+
+# Thread Safety rules
+ThreadSafety:
+  Enabled: true
+
+ThreadSafety/NewThread:
+  Enabled: true
+
+ThreadSafety/ClassInstanceVariable:
+  Enabled: true
+
+# Security rules
+Security:
+  Enabled: true
+
+Security/Eval:
+  Enabled: true
+
+Security/YAMLLoad:
+  Enabled: true
+
+Security/Open:
+  Enabled: true
+
+# Naming conventions
+Naming/VariableNumber:
+  EnforcedStyle: snake_case
+
+Naming/PredicatePrefix:
+  ForbiddenPrefixes:
+    - is_
+    - have_
+  AllowedMethods:
+    - is_a?
+
+# Bundler rules
+Bundler:
+  Enabled: true
+
+Bundler/OrderedGems:
+  Enabled: true
+
+Bundler/DuplicatedGem:
+  Enabled: true
+
+# Lint rules
+Lint:
+  Enabled: true
+
+Lint/UnusedMethodArgument:
+  AllowUnusedKeywordArguments: true
+
+Lint/UnusedBlockArgument:
+  AllowUnusedKeywordArguments: true
+
+# Disable some strict rules for API development
+Style/ClassAndModuleChildren:
+  Enabled: false # Allow compact namespace style
+
+Style/GuardClause:
+  MinBodyLength: 3
+
+Style/IfUnlessModifier:
+  Enabled: false # Prefer explicit if/unless for readability
+
+# =============================================================================
+# TEMPORARY EXCLUSIONS - Current codebase violations
+# These should be addressed gradually in future iterations
+# =============================================================================
+
+# Style violations
+Style/SafeNavigationChainLength:
+  Exclude:
+    - 'app/controllers/concerns/locale_helpers.rb'
+
+# Naming violations  
+Naming/PredicateMethod:
+  Exclude:
+    - 'app/forms/base_form.rb'
+    - 'app/forms/words_form.rb'
+
+# Metrics violations
+Metrics/AbcSize:
+  Exclude:
+    - 'app/forms/words_form.rb'
+    - 'app/requests/dictionary_api_client.rb'
+
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - 'app/forms/words_form.rb'
+    - 'app/requests/dictionary_api_client.rb'
+
+Metrics/PerceivedComplexity:
+  Exclude:
+    - 'app/forms/words_form.rb'
+
+# RSpec violations (MultipleExpectations configured above)
+
+RSpec/DescribedClass:
+  Exclude:
+    - 'spec/controllers/concerns/response_helpers_spec.rb'
+    - 'spec/controllers/concerns/simple_error_handling_spec.rb'
+
+RSpec/ContextWording:
+  Exclude:
+    - 'spec/forms/words_form_spec.rb'
+
+RSpec/LeakyConstantDeclaration:
+  Exclude:
+    - 'spec/forms/base_form_spec.rb'
+
+# Lint violations
+Lint/ConstantDefinitionInBlock:
+  Exclude:
+    - 'spec/forms/base_form_spec.rb'
+
+# Layout violations (LineLength configured above)

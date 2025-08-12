@@ -1,0 +1,12 @@
+2025-08-12T13:04:42.289Z pid=58369 tid=1cf1 INFO: Booted Rails 8.0.2 application in development environment
+2025-08-12T13:04:42.289Z pid=58369 tid=1cf1 INFO: Running in ruby 3.2.1 (2023-02-08 revision 31819e82c8) [x86_64-linux]
+2025-08-12T13:04:42.289Z pid=58369 tid=1cf1 INFO: See LICENSE and the LGPL-3.0 for licensing details.
+2025-08-12T13:04:42.289Z pid=58369 tid=1cf1 INFO: Upgrade to Sidekiq Pro for more features and support: https://sidekiq.org
+2025-08-12T13:04:42.290Z pid=58369 tid=1cf1 INFO: Sidekiq 7.3.9 connecting to Redis with options {:size=>10, :pool_name=>"internal", :url=>"redis://localhost:6380/0"}
+2025-08-12T13:04:42.293Z pid=58369 tid=1cf1 INFO: Sidekiq 7.3.9 connecting to Redis with options {:size=>5, :pool_name=>"default", :url=>"redis://localhost:6380/0"}
+2025-08-12T13:07:12.553Z pid=58369 tid=16up class=ComplexityScoreWorker jid=e67824d63ac6a0cd55d1cf1a INFO: start
+2025-08-12T13:07:13.029Z pid=58369 tid=16up class=ComplexityScoreWorker jid=e67824d63ac6a0cd55d1cf1a elapsed=0.476 INFO: done
+2025-08-12T13:08:22.181Z pid=58369 tid=17bd class=ComplexityScoreWorker jid=5ce53cd14ee26d14adb35774 INFO: start
+2025-08-12T13:08:22.990Z pid=58369 tid=17bd class=ComplexityScoreWorker jid=5ce53cd14ee26d14adb35774 elapsed=0.809 INFO: done
+2025-08-12T13:24:38.153Z pid=58369 tid=17bd class=ComplexityScoreWorker jid=cbfb876241c76cc4cf58952a INFO: start
+2025-08-12T13:24:40.699Z pid=58369 tid=17bd class=ComplexityScoreWorker jid=cbfb876241c76cc4cf58952a elapsed=2.546 INFO: done

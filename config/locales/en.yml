@@ -1,0 +1,109 @@
+# Files in the config/locales directory are used for internationalization and
+# are automatically loaded by Rails. If you want to use locales other than
+# English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t "hello"
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t("hello") %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# To learn more about the API, please read the Rails Internationalization guide
+# at https://guides.rubyonrails.org/i18n.html.
+#
+# Be aware that YAML interprets the following case-insensitive strings as
+# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
+# must be quoted to be interpreted as strings. For example:
+#
+#     en:
+#       "yes": yup
+#       enabled: "ON"
+
+en:
+  api:
+    errors:
+      # Validation errors
+      invalid_words_array: "Words array is required and must contain valid strings"
+      words_array_empty: "Words array cannot be empty"
+      words_array_too_large: "Maximum %{max_words} words allowed per request"
+      word_too_long: "Each word must be %{max_length} characters or less"
+      invalid_word_format: "All words must be non-empty strings"
+      
+      # Job validation errors (from job processing)
+      words_must_be_array: "Words must be an array"
+      too_many_words: "Too many words provided. Maximum %{max_words} words allowed"
+      invalid_words_found: "Invalid words found in array"
+      validation_failed_in_job: "Validation failed during job processing"
+      
+      # Job errors
+      job_not_found: "Job with ID '%{job_id}' was not found"
+      job_creation_failed: "Failed to create processing job"
+      job_processing_failed: "Job processing failed: %{error}"
+      
+      # System errors
+      internal_server_error: "Internal server error occurred"
+      service_unavailable: "Service temporarily unavailable"
+      timeout_error: "Request timeout"
+      redis_connection_error: "Cache service temporarily unavailable"
+      database_error: "Database service temporarily unavailable"
+      
+      # Rate limiting
+      rate_limit_exceeded: "Rate limit exceeded. Please try again later"
+      too_many_requests: "Too many requests. Maximum %{limit} requests per %{period}"
+      
+      # Dictionary API errors
+      dictionary_api_unavailable: "Dictionary service temporarily unavailable"
+      word_not_found: "Word '%{word}' not found in dictionary"
+      
+    messages:
+      # Success messages
+      job_created_successfully: "Job created successfully"
+      job_queued: "Job is queued for processing"
+      job_processing: "Job is being processed"
+      job_completed: "Job completed successfully"
+      job_failed: "Job processing failed"
+      validation_failed: "Validation failed"
+      
+      # Info messages
+      cache_hit: "Result retrieved from cache"
+      cache_miss: "Result computed and cached"
+      
+    meta:
+      # Metadata
+      from_cache: "Retrieved from cache"
+      from_database: "Retrieved from database"
+      processing_time: "Processing time: %{time}ms"
+      
+  complexity_jobs:
+    statuses:
+      pending: "Pending"
+      in_progress: "In Progress" 
+      completed: "Completed"
+      failed: "Failed"
+      
+    cleanup:
+      started: "Cleanup process started"
+      completed: "Cleanup completed successfully"
+      db_cleanup: "Database cleanup: %{count} records removed"
+      cache_cleanup: "Cache cleanup: %{count} keys removed"
+      
+  http_status:
+    200: "OK"
+    201: "Created" 
+    202: "Accepted"
+    400: "Bad Request"
+    404: "Not Found"
+    422: "Unprocessable Entity"
+    429: "Too Many Requests"
+    500: "Internal Server Error"
+    502: "Bad Gateway"
+    503: "Service Unavailable"
+    504: "Gateway Timeout"

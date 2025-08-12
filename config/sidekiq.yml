@@ -1,0 +1,11 @@
+:verbose: false
+:concurrency: 5
+:timeout: 8
+:retry: 5
+
+:redis:
+  :url: <%= ENV.fetch("REDIS_URL", "redis://localhost:6380/0") %>
+
+:queues:
+  - default
+  - complexity_calculation 

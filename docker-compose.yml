@@ -1,0 +1,51 @@
+services:
+  # Redis cache (единственное хранилище)
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Rails web application
+  web:
+    build: .
+    command: rails server -b 0.0.0.0
+    ports:
+      - "3000:3000"
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      RAILS_ENV: development
+      RAILS_LOG_TO_STDOUT: "true"
+    volumes:
+      - .:/app
+      - gem_cache:/usr/local/bundle
+    stdin_open: true
+    tty: true
+
+  # Sidekiq background job processor (для production режима)
+  sidekiq:
+    build: .
+    command: bundle exec sidekiq
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      RAILS_ENV: development
+    volumes:
+      - .:/app
+      - gem_cache:/usr/local/bundle
+
+volumes:
+  redis_data:
+  gem_cache: 

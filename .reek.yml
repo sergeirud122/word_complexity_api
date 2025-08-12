@@ -1,0 +1,168 @@
+# Reek configuration for code smell detection
+detectors:
+  # Control Parameter - методы с boolean параметрами
+  ControlParameter:
+    enabled: true
+    exclude:
+      - ComplexityScoresController # API controllers often need boolean flags
+
+  # Data Clump - группы параметров, которые всегда идут вместе
+  DataClump:
+    enabled: true
+    max_copies: 2
+    min_clump_size: 3
+
+  # Duplicate Method Call - дублирование вызовов методов
+  DuplicateMethodCall:
+    enabled: true
+    max_calls: 2
+    allow_calls: []
+    exclude:
+      - spec/**/*.rb # Allow in specs
+
+  # Feature Envy - метод использует больше методов другого класса
+  FeatureEnvy:
+    enabled: true
+    exclude:
+      - app/controllers/**/*.rb # Controllers naturally delegate
+      - app/serializers/**/*.rb # Serializers access other objects
+
+  # Instance Variable Assumption - использование переменных экземпляра
+  InstanceVariableAssumption:
+    enabled: true
+
+  # Irresponsible Module - модули без документации
+  IrresponsibleModule:
+    enabled: false # Disable for now, enable with documentation
+
+  # Long Parameter List - слишком много параметров
+  LongParameterList:
+    enabled: true
+    max_params: 4
+    overrides:
+      initialize:
+        max_params: 6
+
+  # Long Yield List - слишком много параметров в yield
+  LongYieldList:
+    enabled: true
+    max_params: 3
+
+  # Manual Dispatch - использование case/when для dispatch
+  ManualDispatch:
+    enabled: true
+
+  # Missing Safe Method - небезопасные методы без проверок
+  MissingSafeMethod:
+    enabled: false # Too strict for Rails
+
+  # Nested Iterators - вложенные итераторы
+  NestedIterators:
+    enabled: true
+    max_allowed_nesting: 2
+    ignore_iterators:
+      - tap
+
+  # Nil Check - проверки на nil
+  NilCheck:
+    enabled: true
+
+  # Repeated Conditional - повторяющиеся условия
+  RepeatedConditional:
+    enabled: true
+    max_ifs: 3
+
+  # Subclassed From Core Class - наследование от базовых классов
+  SubclassedFromCoreClass:
+    enabled: true
+
+  # Too Many Constants - слишком много констант
+  TooManyConstants:
+    enabled: true
+    max_constants: 8
+
+  # Too Many Instance Variables - слишком много переменных экземпляра
+  TooManyInstanceVariables:
+    enabled: true
+    max_instance_variables: 6
+
+  # Too Many Methods - слишком много методов в классе
+  TooManyMethods:
+    enabled: true
+    max_methods: 20
+    exclude:
+      - app/controllers/**/*.rb # Controllers can have many actions
+
+  # Too Many Statements - слишком много выражений в методе
+  TooManyStatements:
+    enabled: true
+    max_statements: 8
+    exclude:
+      - spec/**/*.rb # Allow longer specs
+
+  # Uncommunicative Method Name - неинформативные имена методов
+  UncommunicativeMethodName:
+    enabled: true
+    reject:
+      - /^[a-z]$/
+      - /[0-9]$/
+    accept:
+      - id
+      - io
+      - db
+      - up
+
+  # Uncommunicative Module Name - неинформативные имена модулей
+  UncommunicativeModuleName:
+    enabled: true
+    reject:
+      - /^[a-z]$/
+      - /[0-9]$/
+    accept:
+      - Ui
+      - Io
+      - Id
+
+  # Uncommunicative Parameter Name - неинформативные имена параметров
+  UncommunicativeParameterName:
+    enabled: true
+    reject:
+      - /^[a-z]$/
+      - /[0-9]$/
+    accept:
+      - id
+      - io
+      - db
+
+  # Uncommunicative Variable Name - неинформативные имена переменных
+  UncommunicativeVariableName:
+    enabled: true
+    reject:
+      - /^[a-z]$/
+      - /[0-9]$/
+    accept:
+      - id
+      - io
+      - db
+
+  # Unused Parameters - неиспользуемые параметры
+  UnusedParameters:
+    enabled: true
+
+  # Unused Private Method - неиспользуемые приватные методы
+  UnusedPrivateMethod:
+    enabled: true
+
+  # Utility Function - функции-утилиты (статические методы)
+  UtilityFunction:
+    enabled: true
+    public_methods_only: true
+
+# Directories to exclude
+exclude_paths:
+  - vendor
+  - db/migrate
+  - config
+  - bin
+  - spec/spec_helper.rb
+  - spec/rails_helper.rb 

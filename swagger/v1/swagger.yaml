@@ -1,0 +1,278 @@
+---
+openapi: 3.0.1
+info:
+  title: Word Complexity Score API
+  description: Asynchronous API for calculating complexity scores of words based on
+    synonyms and antonyms from dictionary data
+  version: v1
+  contact:
+    name: API Support
+    email: support@example.com
+paths:
+  "/complexity-score":
+    post:
+      summary: Create complexity score job
+      tags:
+      - Complexity Scores
+      description: Accepts a JSON array of words and returns a job_id for tracking
+      operationId: createComplexityScoreJob
+      parameters: []
+      responses:
+        '202':
+          description: job created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  job_id:
+                    type: string
+                    pattern: "^[0-9a-f]{16}$"
+                required:
+                - job_id
+        '422':
+          description: invalid JSON
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  status:
+                    type: integer
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      timestamp:
+                        type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+              example:
+              - happy
+              - joyful
+              - sad
+              - angry
+              description: Array of words to analyze for complexity
+  "/complexity-score/{job_id}":
+    get:
+      summary: Get complexity score job status
+      tags:
+      - Complexity Scores
+      description: Returns the status and result of the complexity score job
+      operationId: getComplexityScoreJobStatus
+      parameters:
+      - name: job_id
+        in: path
+        pattern: "^[0-9a-f]{16}$"
+        description: Job ID returned from POST /complexity-score
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: job status retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum:
+                    - completed
+                  result:
+                    type: object
+                    additionalProperties:
+                      type: number
+                    example:
+                      happy: 3.5
+                      joyful: 4.0
+                      sad: 2.8
+                      angry: 3.2
+                required:
+                - status
+                - result
+        '400':
+          description: invalid job_id format
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  status:
+                    type: integer
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      timestamp:
+                        type: string
+        '404':
+          description: job not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  status:
+                    type: integer
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      timestamp:
+                        type: string
+        '422':
+          description: job failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  status:
+                    type: integer
+                  error:
+                    type: object
+                    properties:
+                      code:
+                        type: string
+                      message:
+                        type: string
+                      timestamp:
+                        type: string
+servers:
+- url: http://127.0.0.1:3000
+  description: Development server
+components:
+  schemas:
+    JobResponse:
+      type: object
+      properties:
+        job_id:
+          type: string
+          pattern: "^[0-9a-f]{16}$"
+          description: Unique identifier for the complexity calculation job
+      required:
+      - job_id
+    JobStatusPending:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - pending
+          description: Job is queued and waiting to be processed
+      required:
+      - status
+    JobStatusInProgress:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - in_progress
+          description: Job is currently being processed
+      required:
+      - status
+    JobStatusCompleted:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - completed
+          description: Job has completed successfully
+        result:
+          type: object
+          additionalProperties:
+            type: number
+          description: Complexity scores for each word. Score = (synonyms + antonyms)
+            / definitions
+          example:
+            happy: 3.5
+            joyful: 4.0
+            sad: 2.8
+            angry: 3.2
+      required:
+      - status
+      - result
+    JobStatusFailed:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - failed
+          description: Job processing failed
+        error:
+          type: string
+          description: Error message describing what went wrong
+      required:
+      - status
+      - error
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          enum:
+          - false
+        status:
+          type: integer
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            timestamp:
+              type: string
+              format: date-time
+            details:
+              type: object
+          required:
+          - code
+          - message
+          - timestamp
+      required:
+      - success
+      - status
+      - error
+    WordsArray:
+      type: array
+      items:
+        type: string
+        minLength: 1
+        maxLength: 50
+        pattern: "^[a-zA-Z'-]+$"
+      minItems: 1
+      maxItems: 100
+      description: Array of words to analyze for complexity
+      example:
+      - happy
+      - joyful
+      - sad
+      - angry
