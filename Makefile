@@ -101,6 +101,51 @@ lint-fix: ## Автоисправление через RuboCop
 	$(COMPOSE) exec $(WEB_SERVICE) bundle exec rubocop -a
 
 # ============================================================================
+# 🔍 Code Analysis & Quality
+# ============================================================================
+
+security: ## Проверка безопасности через Brakeman
+	@echo "$(BLUE)Running Brakeman security analysis...$(NC)"
+	$(COMPOSE) exec $(WEB_SERVICE) bundle exec brakeman -A -q
+
+best-practices: ## Проверка лучших практик Rails
+	@echo "$(BLUE)Running Rails Best Practices...$(NC)"
+	$(COMPOSE) exec $(WEB_SERVICE) bundle exec rails_best_practices .
+
+code-smells: ## Поиск проблем кода через Reek
+	@echo "$(BLUE)Running Reek code smell detection...$(NC)"
+	$(COMPOSE) exec $(WEB_SERVICE) bundle exec reek app/ lib/
+
+duplication: ## Поиск дублирования кода через Flay
+	@echo "$(BLUE)Running Flay duplication detection...$(NC)"
+	$(COMPOSE) exec $(WEB_SERVICE) bundle exec flay app/ lib/
+
+complexity: ## Анализ сложности кода через Flog
+	@echo "$(BLUE)Running Flog complexity analysis...$(NC)"
+	$(COMPOSE) exec $(WEB_SERVICE) bundle exec flog app/ lib/
+
+vulnerabilities: ## Проверка уязвимостей в гемах
+	@echo "$(BLUE)Running Bundle Audit...$(NC)"
+	$(COMPOSE) exec $(WEB_SERVICE) bundle exec bundle-audit check
+
+quality-all: security best-practices code-smells duplication complexity vulnerabilities ## Запустить все анализаторы качества кода
+	@echo "$(GREEN)✅ All code quality checks completed!$(NC)"
+
+quality-summary: ## Краткий отчет по качеству кода
+	@echo "$(BLUE)📊 Code Quality Summary$(NC)"
+	@echo "$(YELLOW)1. Security (Brakeman):$(NC)"
+	@$(COMPOSE) exec $(WEB_SERVICE) bundle exec brakeman -A -q | grep -E "(No warnings found|warnings found)" || echo "Security check completed"
+	@echo "$(YELLOW)2. Best Practices:$(NC)"
+	@$(COMPOSE) exec $(WEB_SERVICE) bundle exec rails_best_practices . | grep -E "(Found.*warnings|No warnings)" || echo "Best practices check completed"
+	@echo "$(YELLOW)3. Code Smells:$(NC)"
+	@$(COMPOSE) exec $(WEB_SERVICE) bundle exec reek app/ lib/ | grep "total warnings" || echo "Code smells check completed"
+	@echo "$(YELLOW)4. Duplication:$(NC)"
+	@$(COMPOSE) exec $(WEB_SERVICE) bundle exec flay app/ lib/ | grep "Total score" || echo "Duplication check completed"
+	@echo "$(YELLOW)5. Vulnerabilities:$(NC)"
+	@$(COMPOSE) exec $(WEB_SERVICE) bundle exec bundle-audit check | grep -E "(No vulnerabilities|vulnerabilities found)" || echo "Vulnerability check completed"
+	@echo "$(GREEN)✅ Quality summary completed!$(NC)"
+
+# ============================================================================
 # 🔍 Development Tools
 # ============================================================================
 

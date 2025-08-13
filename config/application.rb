@@ -45,7 +45,6 @@ module WordComplexityApi
 
     # Accept requests from any origin (for testing)
     config.force_ssl = false
-    
     # Skip ActiveRecord for generators
     config.generators do |g|
       g.orm false
