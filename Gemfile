@@ -49,7 +49,7 @@ group :development, :test do
   gem 'rubocop-capybara', '~> 2.20', require: false
   gem 'rubocop-factory_bot', '~> 2.25', require: false
   gem 'rubocop-performance', '~> 1.20', require: false
-  gem 'rubocop-rails', '~> 2.23', require: false
+  gem 'rubocop-rails', '~> 2.33', require: false
   gem 'rubocop-rake', '~> 0.6', require: false
   gem 'rubocop-rspec', '~> 2.26', require: false
   gem 'rubocop-thread_safety', '~> 0.5', require: false
